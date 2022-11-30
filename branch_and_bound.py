@@ -40,9 +40,7 @@ class bnb:
             cur_weight += self.g.get_edge(node,0)
             self.answer = min(self.answer, cur_weight)
             return
-        
-        for i in range(self.n):
-            w = self.g.get_edge(i,node)
+        for w,i in self.g.get_sorted_edges(node):
             if(bit_mask.has(mask,i)):
                 continue
             if(i == node or i == 0):
@@ -57,3 +55,4 @@ class bnb:
                 mask = bit_mask.put(mask,i)
                 self.tsp(mask,i,deep+1,next_bound,cur_weight)
                 mask = bit_mask.remove(mask,i)
+            cur_weight -= w

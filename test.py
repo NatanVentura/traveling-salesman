@@ -4,6 +4,7 @@ p = 32
 g1,g2 = gen(p,10)
 g3 = getGraph()
 a = bnb(g1,p)
+#a = bnb(g3,6)
 a.tsp()
 print(a.answer)
 
