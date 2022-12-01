@@ -21,6 +21,7 @@ class bnb:
         self.answer = float('inf')
         self.min_weights = [[float('inf'),float('inf')] for y in range(self.n)]
         self.selected_edges = [[0,0] for y in range(self.n)]
+        self.path = []
     def initial_bound(self):
         sum = 0
         for i in range(self.n):
@@ -33,19 +34,24 @@ class bnb:
             sum += (self.min_weights[i][0]+self.min_weights[i][1])
         return ceil(sum/2)
     
-    def tsp(self, mask=0,node=0, deep = 0, cur_bound = 0, cur_weight = 0):
+    def tsp(self, mask=0,node=0, deep = 0, cur_bound = 0, cur_weight = 0, cur_path = [0]):
         if(deep == 0):
             cur_bound = self.initial_bound()
         if(deep == self.n-1):
+            cur_path.append(0)
             cur_weight += self.g.get_edge(node,0)
-            self.answer = min(self.answer, cur_weight)
+            if(self.answer > cur_weight):
+                self.path = cur_path.copy()
+                print(cur_path)
+                print(cur_weight)
+                self.answer = cur_weight
             return
         for w,i in self.g.get_sorted_edges(node):
             if(bit_mask.has(mask,i)):
                 continue
             if(i == node or i == 0):
                 continue
-            cur_weight += w
+            next_weight = cur_weight + w
             next_bound = cur_bound
             if (deep==1):
                 next_bound -= (self.min_weights[node][0] + self.min_weights[i][0])//2
@@ -53,6 +59,6 @@ class bnb:
                 next_bound -= (self.min_weights[node][1] + self.min_weights[i][0])//2
             if(next_bound + cur_weight < self.answer):
                 mask = bit_mask.put(mask,i)
-                self.tsp(mask,i,deep+1,next_bound,cur_weight)
+                next_path = cur_path + [i]
+                self.tsp(mask,i,deep+1,next_bound,next_weight,next_path)
                 mask = bit_mask.remove(mask,i)
-            cur_weight -= w
