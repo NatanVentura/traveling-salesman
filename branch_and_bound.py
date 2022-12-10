@@ -1,4 +1,3 @@
-from graph import graph
 import bit_mask
 from math import ceil
 from queue import PriorityQueue
@@ -28,7 +27,7 @@ class bnb:
             for j in range(self.n):
                 if i == j:
                     continue
-                self.min_weights[i][1] = min(self.min_weights[i][1],self.g.get_edge(i,j))
+                self.min_weights[i][1] = min(self.min_weights[i][1],self.g[i][j]["weight"])
                 if(self.min_weights[i][0] > self.min_weights[i][1]):
                     self.min_weights[i][0],self.min_weights[i][1] = self.min_weights[i][1],self.min_weights[i][0]
             sum += (self.min_weights[i][0]+self.min_weights[i][1])
@@ -39,14 +38,15 @@ class bnb:
             cur_bound = self.initial_bound()
         if(deep == self.n-1):
             cur_path.append(0)
-            cur_weight += self.g.get_edge(node,0)
+            cur_weight += self.g[node][0]["weight"]
             if(self.answer > cur_weight):
                 self.path = cur_path.copy()
-                print(cur_path)
-                print(cur_weight)
                 self.answer = cur_weight
             return
-        for w,i in self.g.get_sorted_edges(node):
+        for i in range(self.n):
+            if(i == node):
+                continue
+            w = self.g[node][i]["weight"]
             if(bit_mask.has(mask,i)):
                 continue
             if(i == node or i == 0):

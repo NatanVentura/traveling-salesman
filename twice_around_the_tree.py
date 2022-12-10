@@ -6,13 +6,12 @@ class twice_around_the_tree:
         self.adj = mst(graph,n)
         self.vis = [False]*self.n
         self.path = []
+        self.answer = 0
     def tsp(self):
         self.dfs(0)
         self.path.append(0)
-        cost = 0
         for i in range(1,len(self.path)):
-            cost += self.graph.get_edge(self.path[i-1],self.path[i])
-        return cost
+            self.answer += self.graph[self.path[i-1]][self.path[i]]["weight"]
     def dfs(self,i):
         self.vis[i] = True
         self.path.append(i)

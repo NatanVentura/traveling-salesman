@@ -5,11 +5,10 @@ def mst(graph, n):
     DSU = dsu(n)
     for i in range(n):
         for j in range(i+1,n):
-          edges.append((graph.get_edge(i,j),i,j))  
+          edges.append((graph[i][j]['weight'],i,j))  
     edges.sort()
     value = 0
     adj = [[] for i in range(n)]
-    print(adj)
     for w,i,j in edges:
         if(DSU.find(i) == DSU.find(j)):
             continue
