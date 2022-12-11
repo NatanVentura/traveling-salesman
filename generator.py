@@ -10,24 +10,19 @@ def e_dist(p1,p2):
 def m_dist(p1,p2):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-def gen(n,s = 7):
-    #seed(s)
-    e_graph = nx.Graph()
-    m_graph = nx.Graph()
+def gen(n,s = 7, type = 'euclidean'):
+    seed(s)
+    graph = nx.Graph()
     for i in range(n):
-        e_graph.add_node(i)
-        m_graph.add_node(i)
+        graph.add_node(i)
     v = []
     for i in range(n):
         v.append((randint(0,MAX),randint(0,MAX)))
-    #print(v)
+    f = e_dist if type == 'euclidean' else m_dist 
     for i in range(0,n):
         for j in range(i+1,n):
-            #print('i',i,'j',j,"e_dist:",e_dist(v[i],v[j]))
-            e_graph.add_edge(i,j, weight = e_dist(v[i],v[j]))
-            m_graph.add_edge(i,j,weight = m_dist(v[i],v[j]))
-        #print()
-    return (e_graph,m_graph)
+            graph.add_edge(i,j, weight = f(v[i],v[j]))
+    return graph
 
 MAT = [[9999,    64,  378, 519, 434, 200], 
 [64,  9999,    318, 455, 375, 164] ,

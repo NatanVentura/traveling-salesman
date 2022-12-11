@@ -1,17 +1,5 @@
 import bit_mask
 from math import ceil
-from queue import PriorityQueue
-
-def printBin(x, b = True):
-    if(x == 0):
-        if(b):
-            print(0)
-        return
-    printBin(x//2,False)
-    print(x&1,end='')
-    if b:
-        print()
-
 
 class bnb:
     def __init__(self,g, n):
